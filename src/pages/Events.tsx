@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { SetStateAction, useEffect, useState } from 'react'
 import event1 from '../img/event-1.jpg';
 import event2 from '../img/event-2.jpg';
 import event3 from '../img/event-3.jpg';
@@ -11,18 +11,58 @@ import bg from '../img/background-site.jpg'
 import ReactSelect from '../components/Select';
 import TextField from '../components/Text';
 import Footer from '../components/Footer';
+import { GetCountries, GetState, GetCity } from 'react-country-state-city';
+import 'react-country-state-city/dist/react-country-state-city.css';
+import { events, foodCategory, foodTypes } from '../components/MenuData';
 
-const events = [
-  { id: 1, label: 'Wedding', value: 'wedding' },
-  { id: 2, label: 'Birthday Party', value: 'birthday_party' },
-  { id: 3, label: 'Corporate Event', value: 'corporate_event' },
-];
 
 const Events = () => {
-  const [event, setEvent] = useState('');
+  const [event, setEvent] = useState();
   const [foodType, setFoodType] = useState('');
-  const [place, setPlace] = useState('');
+  const [foodCategories, setFoodCategories] = useState('');
   const [contact, setContact] = useState('');
+  const [selectedCountry, setSelectedCountry] = useState<string>('');
+  const [selectedState, setSelectedState] = useState<string>('');
+  const [selectedCity, setSelectedCity] = useState<string>('');
+  const [countriesList, setCountriesList] = useState<any[]>([]);
+  const [stateList, setStateList] = useState<any[]>([]);
+  const [cityList, setCityList] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        const countries = await GetCountries();
+        setCountriesList(countries);
+      } catch (error) {
+        console.error('Error fetching countries:', error);
+      }
+    };
+    fetchCountries();
+  }, []);
+
+  useEffect(() => {
+    if (selectedCountry) {
+      const countryId = countriesList.find(c => c.name === selectedCountry)?.id || 0;
+      if (countryId) {
+        GetState(countryId).then((states: SetStateAction<any[]>) => {
+          setStateList(states);
+        });
+      }
+    }
+  }, [selectedCountry, countriesList]);
+
+  useEffect(() => {
+    if (selectedState) {
+      const countryId = countriesList.find(c => c.name === selectedCountry)?.id || 0;
+      const stateId = stateList.find(s => s.name === selectedState)?.id || 0;
+      if (countryId && stateId) {
+        GetCity(countryId, stateId).then((cities: SetStateAction<any[]>) => {
+          setCityList(cities);
+        });
+      }
+    }
+  }, [selectedState, stateList, selectedCountry, countriesList]);
+
 
   return (
     <div>
@@ -38,19 +78,19 @@ const Events = () => {
             Latest Events
           </p>
           <p className="font-playball lg:mt-10 text-center text-3xl lg:text-5xl py-5 max-w-[800px]">
-            Contact Us For Any Queries!          
+            Contact Us For Any Queries!
           </p>
         </div>
       </div>
 
       <div className='justify-center items-center'>
         <div className='flex justify-center items-center'>
-            <div className='lg:flex grid gap-10 lg:my-7'>
-              <button className="rounded-full border border-[#d4a762] bg-textPrimary font-bold text-black px-8 font-sans text-base py-2">All Events</button>
-              <button className="rounded-full border border-[#d4a762] font-bold text-black px-8 font-sans text-base py-2">Wedding</button>
-              <button className="rounded-full border border-[#d4a762] font-bold text-black px-8 font-sans text-base py-2">Corporate</button>
-              <button className="rounded-full border border-[#d4a762] font-bold text-black px-8 font-sans text-base py-2">Cocktail</button>
-              <button className="rounded-full border border-[#d4a762] font-bold text-black px-8 font-sans text-base py-2">Buffet</button>
+          <div className='lg:flex grid gap-10 lg:my-7'>
+            <button className="rounded-full border border-[#d4a762] bg-textPrimary font-bold text-black px-8 font-sans text-base py-2">All Events</button>
+            <button className="rounded-full border border-[#d4a762] font-bold text-black px-8 font-sans text-base py-2">Wedding</button>
+            <button className="rounded-full border border-[#d4a762] font-bold text-black px-8 font-sans text-base py-2">Corporate</button>
+            <button className="rounded-full border border-[#d4a762] font-bold text-black px-8 font-sans text-base py-2">Cocktail</button>
+            <button className="rounded-full border border-[#d4a762] font-bold text-black px-8 font-sans text-base py-2">Buffet</button>
 
           </div>
         </div>
@@ -126,57 +166,78 @@ const Events = () => {
 
             </div>
             <div className='flex lg:justify-between lg:w-[1000px] gap-2 mx-5 flex-wrap justify-center'>
-              
+
+              <select
+                id="country"
+                value={selectedCountry}
+                onChange={(e) => {
+                  setSelectedCountry(e.target.value);
+                }}
+                className="mb-4 block w-[300px] border border-textPrimary rounded-md shadow-sm  sm:text-sm p-2"
+              >
+                <option value="" disabled>Select Country</option>
+                {countriesList.map((country) => (
+                  <option key={country.id} value={country.name}>
+                    {country.name}
+                  </option>
+                ))}
+              </select>
+
+              <select className="mb-4 block w-[300px] border border-textPrimary rounded-md shadow-sm  sm:text-sm p-2"
+                id="state"
+                value={selectedState}
+                onChange={(e) => {
+                  setSelectedState(e.target.value)
+                }}
+              >
+                <option value='' disabled>Select State</option>
+                {stateList.map((item, index) => (
+                  <option key={index} value={item.value}> {item.name}</option>
+                ))}
+
+              </select>
+
+              <select className='mb-4 block w-[300px] border border-textPrimary rounded-md shadow-sm  sm:text-sm p-2'
+                id='city'
+                value={selectedCity}
+                onChange={(e)=> setSelectedCity(e.target.value)}
+
+              >
+                <option>Select City</option>
+                {cityList.map((item, index) => (
+                  <option key={index} value=''>{item.name}
+                  </option>
+
+                ))}
+              </select>
               <ReactSelect
                 label="Select an Event"
                 options={events}
-                value={event}
-                onChange={setEvent}
+                value={events.find(e => e.value === event)} // Ensure the value is matched correctly
+                onChange={(selectedOption: any) => setEvent(selectedOption.value)}  // Set the value correctly
+                placeholder="Choose an event"
+                
+              />
+
+              <ReactSelect
+                label="Select an Event"
+                options={foodCategory}
+                value={foodType}
+                onChange={(e:any)=> setFoodType(e.target.value)}
                 placeholder="Choose an event"
               />
 
               <ReactSelect
                 label="Select an Event"
-                options={events}
-                value={event}
-                onChange={setEvent}
+                options={foodTypes}
+                value={foodCategories}
+                onChange={(e:any)=> setFoodCategories(e.target.value)}
                 placeholder="Choose an event"
               /> 
-              
-              <ReactSelect
-                label="Select an Event"
-                options={events}
-                value={event}
-                onChange={setEvent}
-                placeholder="Choose an event"
-              />
-
-              <ReactSelect
-                label="Select an Event"
-                options={events}
-                value={event}
-                onChange={setEvent}
-                placeholder="Choose an event"
-              />
-
-              <ReactSelect
-                label="Select an Event"
-                options={events}
-                value={event}
-                onChange={setEvent}
-                placeholder="Choose an event"
-              />
-              
-              <ReactSelect
-                label="Select an Event"
-                options={events}
-                value={event}
-                onChange={setEvent}
-                placeholder="Choose an event"
-              />
 
               <TextField
                 name=""
+                value={contact}
                 placeholder="Your Contact No."
                 type="text"
                 onChange={(event: any) => setContact(event.target.value)}

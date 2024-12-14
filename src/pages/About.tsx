@@ -23,7 +23,7 @@ const About = () => {
 
         <div className='lg:flex mt-10 lg:mx-20'>
           <div className='md:w-1/2 flex justify-center md:mt-0 px-4'>
-            <img src={event6} className="object-cover  lg:w-[500px] lg:h-[500px]" />
+            <img src={event6} alt="event" className="object-cover  lg:w-[500px] lg:h-[500px]" />
           </div>
           <div className='lg:w-1/2 mt-10'>
             <div className='text-center block'>
@@ -91,7 +91,7 @@ const About = () => {
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 p-4">
                 <div className="relative flex flex-col items-center">
-                  <img src={Team1} className='rounded-lg' />
+                  <img src={Team1} alt="event" className='rounded-lg' />
                   <div className="absolute bottom-0 bg-black bg-opacity-100 text-white w-full text-center py-2 rounded">
                     <p className="font-bold text-2xl text-textPrimary">Henery</p>
                     <p className="text-base text-white font-extrabold">Decoration Chef</p>
@@ -100,7 +100,7 @@ const About = () => {
 
                 <div className="shadow-lg flex flex-col items-center">
                   <div className="relative flex flex-col items-center">
-                    <img src={Team2} className='rounded-lg' />
+                    <img src={Team2} alt="event" className='rounded-lg' />
                     <div className="absolute bottom-0 bg-black bg-opacity-100 text-white w-full text-center py-2 rounded">
                       <p className="font-bold text-2xl text-textPrimary">Jemes Born</p>
                       <p className="text-base text-white font-extrabold">Executive Chef</p>
@@ -110,7 +110,7 @@ const About = () => {
 
                 <div className="shadow-lg flex flex-col items-center">
                   <div className="relative flex flex-col items-center">
-                    <img src={Team3} className='rounded-lg' />
+                    <img src={Team3} alt="event" className='rounded-lg' />
                     <div className="absolute bottom-0 bg-black bg-opacity-100 text-white w-full text-center py-2 rounded">
                       <p className="font-bold text-2xl text-textPrimary">Martin Hill</p>
                       <p className="text-base text-white font-extrabold">Kitchen Porter</p>

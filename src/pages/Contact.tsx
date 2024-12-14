@@ -1,4 +1,3 @@
-import { FaLandmark } from "react-icons/fa6"
 import TextField from "../components/Text"
 import { FaMapMarkerAlt, FaPhone } from "react-icons/fa";
 import { IoMail } from "react-icons/io5";

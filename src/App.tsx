@@ -6,7 +6,6 @@ import Navbar from './components/Navbar';
 import Services from './pages/Services';
 import Events from './pages/Events';
 import Menu from './pages/Menu';
-import Pages from './pages/Pages';
 import Contact from './pages/Contact';
 
 function App() {

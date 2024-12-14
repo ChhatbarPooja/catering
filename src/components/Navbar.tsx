@@ -2,6 +2,8 @@ import { NavLink } from "react-router-dom";
 import { LuSearch } from "react-icons/lu";
 import { useState } from "react";
 
+import { VscThreeBars } from "react-icons/vsc";
+
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -21,9 +23,9 @@ const Navbar = () => {
                 {/* Mobile Menu Button */}
                 <button
                     onClick={toggleMenu}
-                    className="lg:hidden bg-[#d4a762] rounded-full h-10 w-10 flex justify-center items-center"
+                    className="lg:hidden rounded-full h-10 w-10 flex justify-center items-center"
                 >
-                    <LuSearch className="text-black text-lg" />
+                    <VscThreeBars className="text-black text-lg" />
                 </button>
 
                 {/* Desktop Navigation Links */}
@@ -55,7 +57,7 @@ const Navbar = () => {
                             }>Menu</NavLink>
                         </li>
                         <li className="font-bold hover:text-[#d4a762]">
-                            <NavLink to="/contact" className={({isActive,isPending})=> isPending ? "" : isActive ? "text-textPrimary" : ""}>Contact</NavLink>
+                            <NavLink to="/contact" className={({ isActive, isPending }) => isPending ? "" : isActive ? "text-textPrimary" : ""}>Contact</NavLink>
                         </li>
                     </ul>
                 </div>
@@ -71,8 +73,9 @@ const Navbar = () => {
 
             {/* Mobile Navigation Links */}
             <div
-                className={`lg:hidden ${isMenuOpen ? "block" : "hidden"} bg-white absolute top-20 left-0 w-full py-4`}
+                className={`lg:hidden ${isMenuOpen ? "block" : "hidden"} bg-white top-20 left-0 w-full py-4 z-50`}
             >
+
                 <ul className="flex flex-col items-center space-y-4 text-lg text-[#0000008C] font-extrabold font-sans">
                     <li className="font-bold hover:text-[#d4a762]">
                         <NavLink to="/">Home</NavLink>

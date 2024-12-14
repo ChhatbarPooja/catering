@@ -6,7 +6,6 @@ import menu5 from '../img/menu-05.jpg';
 import menu6 from '../img/menu-06.jpg';
 import menu7 from '../img/menu-07.jpg';
 import menu8 from '../img/menu-08.jpg';
-import menu9 from '../img/menu-09.jpg';
 
 export const menuData=[
     {
@@ -100,10 +99,10 @@ export const statisticsData = {
     { id: 3, label: 'Indian', value: 'indian' },
   ];
   
-  export const places = [
-    { id: 1, label: 'New York', value: 'new_york' },
-    { id: 2, label: 'San Francisco', value: 'san_francisco' },
-    { id: 3, label: 'Los Angeles', value: 'los_angeles' },
+  export const foodCategory = [
+    { id: 1, label: 'Vegeterian', value: 'veg' },
+    { id: 2, label: 'Non Vegeterian', value: 'non-veg' },
+    { id: 3, label: 'Jain', value: 'jain' },
   ];
   
   export const events = [

@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { SetStateAction, useEffect, useState } from 'react';
 import hero from "../img/hero.png";
 import { PiArrowBendUpRightBold } from "react-icons/pi";
-import { FaHamburger, FaFacebookF, FaLongArrowAltRight, FaPizzaSlice, FaUtensils, FaWalking, FaWheelchair, FaWineGlassAlt } from "react-icons/fa";
+import { FaHamburger, FaFacebookF, FaLongArrowAltRight, FaPizzaSlice, FaUtensils, FaWalking, FaWheelchair, FaWineGlassAlt, FaTwitter } from "react-icons/fa";
 import { FaUsers } from "react-icons/fa6";
 import { LiaUsersCogSolid } from "react-icons/lia";
 import { FaCheck } from "react-icons/fa";
@@ -18,22 +18,22 @@ import event5 from '../img/event-5.jpg';
 import event6 from '../img/event-6.jpg';
 import event7 from '../img/event-7.jpg';
 import event8 from '../img/event-8.jpg';
-import menu1 from '../img/menu-01.jpg';
-import menu2 from '../img/menu-02.jpg';
-import menu3 from '../img/menu-03.jpg';
-import menu4 from '../img/menu-04.jpg';
-import menu5 from '../img/menu-05.jpg';
-import menu6 from '../img/menu-06.jpg';
-import menu7 from '../img/menu-07.jpg';
-import menu8 from '../img/menu-08.jpg';
-import menu9 from '../img/menu-09.jpg';
+// import menu1 from '../img/menu-01.jpg';
+// import menu2 from '../img/menu-02.jpg';
+// import menu3 from '../img/menu-03.jpg';
+// import menu4 from '../img/menu-04.jpg';
+// import menu5 from '../img/menu-05.jpg';
+// import menu6 from '../img/menu-06.jpg';
+// import menu7 from '../img/menu-07.jpg';
+// import menu8 from '../img/menu-08.jpg';
+// import menu9 from '../img/menu-09.jpg';
 import bg from '../img/background-site.jpg'
 import ReactSelect from '../components/Select';
 import TextField from '../components/Text';
-import Testimonial from '../img/testimonial-1.jpg'
-import Testimonial2 from '../img/testimonial-2.jpg'
-import Testimonial3 from '../img/testimonial-3.jpg'
-import Testimonial4 from '../img/testimonial-4.jpg'
+// import Testimonial from '../img/testimonial-1.jpg'
+// import Testimonial2 from '../img/testimonial-2.jpg'
+// import Testimonial3 from '../img/testimonial-3.jpg'
+// import Testimonial4 from '../img/testimonial-4.jpg'
 import Team1 from '../img/team-1.jpg'
 import Team2 from '../img/team-2.jpg'
 import Team3 from '../img/team-3.jpg'
@@ -41,31 +41,57 @@ import Team4 from '../img/team-4.jpg'
 import { menuData } from '../components/MenuData'
 import Footer from '../components/Footer';
 import { FaInstagram } from "react-icons/fa";
-import { ImLinkedin2 } from "react-icons/im";
-const events = [
-  { id: 1, label: 'Wedding', value: 'wedding' },
-  { id: 2, label: 'Birthday Party', value: 'birthday_party' },
-  { id: 3, label: 'Corporate Event', value: 'corporate_event' },
-];
-
-const foodTypes = [
-  { id: 1, label: 'Italian', value: 'italian' },
-  { id: 2, label: 'Mexican', value: 'mexican' },
-  { id: 3, label: 'Indian', value: 'indian' },
-];
-
-const places = [
-  { id: 1, label: 'New York', value: 'new_york' },
-  { id: 2, label: 'San Francisco', value: 'san_francisco' },
-  { id: 3, label: 'Los Angeles', value: 'los_angeles' },
-];
-
-
+// import { ImLinkedin2 } from "react-icons/im";
+import { GetCountries, GetState, GetCity } from 'react-country-state-city';
+import 'react-country-state-city/dist/react-country-state-city.css';
+import { events, foodCategory, foodTypes } from '../components/MenuData';
 const Home = () => {
   const [event, setEvent] = useState('');
   const [foodType, setFoodType] = useState('');
-  const [place, setPlace] = useState('');
+  const [foodCategories, setFoodCategories] = useState('');
   const [contact, setContact] = useState('');
+  const [selectedCountry, setSelectedCountry] = useState<string>('');
+  const [selectedState, setSelectedState] = useState<string>('');
+  const [selectedCity, setSelectedCity] = useState<string>('');
+  const [countriesList, setCountriesList] = useState<any[]>([]);
+  const [stateList, setStateList] = useState<any[]>([]);
+  const [cityList, setCityList] = useState<any[]>([]);
+
+
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        const countries = await GetCountries();
+        setCountriesList(countries);
+      } catch (error) {
+        console.error('Error fetching countries:', error);
+      }
+    };
+    fetchCountries();
+  }, []);
+
+  useEffect(() => {
+    if (selectedCountry) {
+      const countryId = countriesList.find(c => c.name === selectedCountry)?.id || 0;
+      if (countryId) {
+        GetState(countryId).then((states: SetStateAction<any[]>) => {
+          setStateList(states);
+        });
+      }
+    }
+  }, [selectedCountry, countriesList]);
+
+  useEffect(() => {
+    if (selectedState) {
+      const countryId = countriesList.find(c => c.name === selectedCountry)?.id || 0;
+      const stateId = stateList.find(s => s.name === selectedState)?.id || 0;
+      if (countryId && stateId) {
+        GetCity(countryId, stateId).then((cities: SetStateAction<any[]>) => {
+          setCityList(cities);
+        });
+      }
+    }
+  }, [selectedState, stateList, selectedCountry, countriesList]);
 
   return (
     <div>
@@ -93,13 +119,13 @@ const Home = () => {
         </div>
 
         {/* Image Block */}
-        <div className="md:w-1/2 flex justify-center md:mt-0 px-4">
+        <div className="flex justify-center md:mt-0 px-4">
           <img src={hero} alt="Hero" className="object-cover mt-28 lg:w-[500px] lg:h-[500px]" />
         </div>
       </div>
       <div className='lg:flex mt-20 lg:mx-20'>
-        <div className='md:w-1/2 flex justify-center md:mt-0 px-4'>
-          <img src={event6} className="object-cover  lg:w-[500px] lg:h-[500px]" />
+        <div className=' flex justify-center md:mt-0 px-4'>
+          <img src={event6} alt="event" className="object-cover  lg:w-[500px] lg:h-[500px]" />
         </div>
         <div className='lg:w-1/2 mt-5'>
           <div className='text-center block'>
@@ -162,7 +188,7 @@ const Home = () => {
             <p className='font-playball flex justify-center text-2xl lg:text-5xl lg:py-5 py-3'>What We Offer</p>
           </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 lg:p-4">
+        <div className="grid lg:grid-cols-4 sm:grid-cols-2 md:grid-cols-2 gap-4 lg:p-4">
           <div className="shadow-lg flex flex-col items-center space-y-3 p-10">
             <FaCheese className="h-20 w-20 text-textPrimary" />
             <p className="text-2xl font-bold">Wedding Services</p>
@@ -194,7 +220,7 @@ const Home = () => {
 
           </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 p-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 p-4">
           <div className="shadow-lg flex flex-col items-center space-y-3 p-10">
             <FaWineGlassAlt className="h-20 w-20 text-textPrimary" />
             <p className="text-2xl font-bold">Pub Party</p>
@@ -238,7 +264,7 @@ const Home = () => {
             <p className='font-playball lg:text-5xl text-2xl lg:py-5 py-3 flex justify-center items-center'>Contact Us For Any Queries!
 
             </p>
-            <div className='lg:flex grid lg:gap-10 gap-4 lg:my-14'>
+            <div className='lg:flex md:flex grid lg:gap-10 gap-4 lg:my-14'>
               <button className="rounded-full border border-[#d4a762] bg-textPrimary font-bold text-black px-8 font-sans text-base py-2">All Events</button>
               <button className="rounded-full border border-[#d4a762] font-bold text-black px-8 font-sans text-base py-2">Wedding</button>
               <button className="rounded-full border border-[#d4a762] font-bold text-black px-8 font-sans text-base py-2">Corporate</button>
@@ -251,25 +277,25 @@ const Home = () => {
         <div className=''>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 p-4">
             <div className="flex flex-col items-center">
-              <img src={event1} className='rounded-lg' />
+              <img src={event1} alt="event" className='rounded-lg' />
             </div>
 
             <div className="shadow-lg flex flex-col items-center">
               <div className="flex flex-col items-center">
-                <img src={event2} className='rounded-lg' />
+                <img src={event2}  alt="event" className='rounded-lg' />
               </div>
             </div>
 
             <div className="shadow-lg flex flex-col items-center">
               <div className="flex flex-col items-center">
-                <img src={event3} className='rounded-lg' />
+                <img src={event3} alt="event" className='rounded-lg' />
               </div>
 
             </div>
 
             <div className="shadow-lg flex flex-col items-center">
               <div className="flex flex-col items-center">
-                <img src={event4} className='rounded-lg' />
+                <img src={event4} alt="event" className='rounded-lg' />
               </div>
 
             </div>
@@ -277,27 +303,27 @@ const Home = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 p-4">
             <div className="shadow-lg flex flex-col items-center">
               <div className="flex flex-col items-center">
-                <img src={event5} />
+                <img src={event5} alt="event"/>
               </div>
             </div>
 
             <div className="shadow-lg flex flex-col items-center">
               <div className="flex flex-col items-center">
-                <img src={event6} className='rounded-lg' />
-              </div>
-
-            </div>
-
-            <div className="shadow-lg flex flex-col items-center">
-              <div className="flex flex-col items-center">
-                <img src={event7} className='rounded-lg' />
+                <img src={event6} alt="event" className='rounded-lg' />
               </div>
 
             </div>
 
             <div className="shadow-lg flex flex-col items-center">
               <div className="flex flex-col items-center">
-                <img src={event8} className='rounded-lg' />
+                <img src={event7} alt="event" className='rounded-lg' />
+              </div>
+
+            </div>
+
+            <div className="shadow-lg flex flex-col items-center">
+              <div className="flex flex-col items-center">
+                <img src={event8} alt="event" className='rounded-lg' />
               </div>
 
             </div>
@@ -314,7 +340,7 @@ const Home = () => {
             </p>
             <p className='font-playball text-2xl lg:text-5xl lg:my-8 my-4  w-full text-center flex justify-center items-center'>Most Popular Food in the World
             </p>
-            <div className='lg:flex grid gap-3 my-5 lg:my-8 '>
+            <div className='lg:flex md:flex grid gap-3 my-5 lg:my-8 '>
               <button className="rounded-full border border-[#d4a762] bg-textPrimary font-bold text-black px-10 font-sans text-base py-2">Starter</button>
               <button className="rounded-full border border-[#d4a762] font-bold text-black px-10 font-sans text-base py-2">Main Course</button>
               <button className="rounded-full border border-[#d4a762] font-bold text-black px-10 font-sans text-base py-2">Drinks</button>
@@ -324,7 +350,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <div className="lg:flex grid gap-20">
+        <div className="lg:flex sm:block md:flex gap-20 md:justify-center">
           {/* Left Column */}
           <div className="lg:w-1/2 w-[354px]">
             {menuData.slice(0, Math.ceil(menuData.length / 2)).map((item) => (
@@ -371,7 +397,7 @@ const Home = () => {
       <div className='container  bg-[#fffcf8]'>
         <div className="flex justify-between items-center lg:border border-textPrimary">
           <div className='opacity-35'>
-            <img src={bg} className='lg:flex hidden' />
+            <img src={bg} alt="event" className='lg:flex hidden' />
           </div>
           <div>
             <div className='flex-col flex items-center lg:py-5 py-4'>
@@ -383,58 +409,87 @@ const Home = () => {
 
             </div>
             <div className='flex lg:justify-between lg:w-[1000px] gap-2 mx-5 flex-wrap justify-center'>
+              <select
+                id="country"
+                value={selectedCountry}
+                onChange={(e) => {
+                  setSelectedCountry(e.target.value);
+                }}
+                className="mb-4 block w-[300px] border border-textPrimary rounded-md shadow-sm  sm:text-sm p-2"
+              >
+                <option value="" disabled>Select Country</option>
+                {countriesList.map((country) => (
+                  <option key={country.id} value={country.name}>
+                    {country.name}
+                  </option>
+                ))}
+              </select>
+
+              <select className="mb-4 block w-[300px] border border-textPrimary rounded-md shadow-sm  sm:text-sm p-2"
+                id="state"
+                value={selectedState}
+                onChange={(e) => {
+                  setSelectedState(e.target.value)
+                }}
+              >
+                <option value='' disabled>Select State</option>
+                {stateList.map((item, index) => (
+                  <option key={index} value={item.value}> {item.name}</option>
+                ))}
+
+              </select>
+
+              <select className='mb-4 block w-[300px] border border-textPrimary rounded-md shadow-sm  sm:text-sm p-2'
+                id='city'
+                value={selectedCity}
+                onChange={(e)=>setSelectedCity(e.target.value)}
+
+              >
+                <option>Select City</option>
+                {cityList.map((item, index) => (
+                  <option key={index} value=''>{item.name}
+                  </option>
+
+                ))}
+              </select>
               <ReactSelect
                 label="Select an Event"
                 options={events}
                 value={event}
-                onChange={setEvent}
-                placeholder="Choose an event"
+                onChange={(selectedOption: any) => setEvent(selectedOption.value)}  // Set the value correctly
+                placeholder="Select Event"
+
               />
+
               <ReactSelect
                 label="Select an Event"
-                options={events}
-                value={event}
-                onChange={setEvent}
-                placeholder="Choose an event"
+                options={foodCategory}
+                value={foodType}
+                onChange={(selectedOption: any) => setFoodType(selectedOption.value)}  // Set the value correctly
+                placeholder="Select Foodtype"
               />
+
               <ReactSelect
                 label="Select an Event"
-                options={events}
-                value={event}
-                onChange={setEvent}
-                placeholder="Choose an event"
+                options={foodTypes}
+                value={foodCategories}
+                onChange={(selectedOption: any) => setFoodCategories(selectedOption.value)}  // Set the value correctly
+                placeholder="Select Food Categories"
               />
-              <ReactSelect
-                label="Select an Event"
-                options={events}
-                value={event}
-                onChange={setEvent}
-                placeholder="Choose an event"
-              />
-              <ReactSelect
-                label="Select an Event"
-                options={events}
-                value={event}
-                onChange={setEvent}
-                placeholder="Choose an event"
-              /> <ReactSelect
-                label="Select an Event"
-                options={events}
-                value={event}
-                onChange={setEvent}
-                placeholder="Choose an event"
-              />
+
               <TextField
                 name=""
+                value={contact}
                 placeholder="Your Contact No."
                 type="text"
-                className="w-[300px]"
-                onChange={(event: any) => setContact(event.target.value)} />
+                onChange={(event: any) => setContact(event.target.value)}
+                className="w-[300px]" />
+
               <TextField
                 name=""
-                className="w-[300px]"
                 placeholder="DD/MM/YYYY"
                 type="date"
+                className="w-[300px]"
                 onChange={(event: any) => setContact(event.target.value)} />
 
               <TextField
@@ -449,7 +504,7 @@ const Home = () => {
             </div>
           </div>
           <div className='opacity-35'>
-            <img src={bg} className='lg:flex hidden ' />
+            <img src={bg} alt="event" className='lg:flex hidden ' />
           </div>
         </div>
       </div>
@@ -465,31 +520,37 @@ const Home = () => {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 p-4">
             <div className="relative flex flex-col items-center rounded-lg overflow-hidden cursor-pointer group">
-              <img src={Team1} className="rounded-lg" />
+              <img src={Team1} alt="event" className="rounded-lg" />
               <div className='absolute flex items-end bg-textPrimary p-3 rounded-full right-1 top-1'>
-              <div className='block'>
-                <FaShareAlt />
+                <div className='block'>
+                  <FaShareAlt />
+                </div>
               </div>
-            </div>
-            
-              <div className='absolute flex items-end bg-textPrimary p-3 rounded-full right-1 top-12'>
-              <div className='block'>
-                <FaFacebookF />
-              </div>
-            </div>
 
-              <div className='absolute flex items-end bg-textPrimary p-3 rounded-full right-1 top-[92px]'>
-              <div className='block'>
-                <FaInstagram />
+              <div className='absolute flex items-end bg-textPrimary p-3 rounded-full right-1 top-12 opacity-0 group-hover:opacity-100 transition-opacity'>
+                <div className='block'>
+                  <FaFacebookF />
+                </div>
               </div>
-            
-              
+
+              <div className='absolute flex items-end bg-textPrimary p-3 rounded-full right-1 top-[135px] opacity-0 group-hover:opacity-100 transition-opacity'>
+                  <div className='block'>
+                  <FaTwitter />
+                  </div>
+              </div>
+
+              <div className='absolute flex items-end bg-textPrimary p-3 rounded-full right-1 top-[92px] opacity-0 group-hover:opacity-100 transition-opacity'>
+                <div className='block'>
+                  <FaInstagram />
+                </div>
+
+
               </div>
               <div className="absolute bottom-0 bg-black bg-opacity-100 text-white w-full text-center py-2">
-              
-              <div>
-                <p className="font-bold text-2xl text-textPrimary">Henery</p>
-                <p className="text-base text-white font-extrabold">Decoration Chef</p>
+
+                <div>
+                  <p className="font-bold text-2xl text-textPrimary">Henery</p>
+                  <p className="text-base text-white font-extrabold">Decoration Chef</p>
                 </div>
               </div>
               {/* <div className="absolute inset-0 bg-textPrimary bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity"></div> */}
@@ -498,7 +559,7 @@ const Home = () => {
 
             <div className="shadow-lg flex flex-col items-center">
               <div className="relative flex flex-col items-center">
-                <img src={Team2} className='rounded-lg' />
+                <img src={Team2} alt="event" className='rounded-lg' />
                 <div className="absolute bottom-0 bg-black bg-opacity-100 text-white w-full text-center py-2 rounded">
                   <p className="font-bold text-2xl text-textPrimary">Jemes Born</p>
                   <p className="text-base text-white font-extrabold">Executive Chef</p>
@@ -508,7 +569,7 @@ const Home = () => {
 
             <div className="shadow-lg flex flex-col items-center">
               <div className="relative flex flex-col items-center">
-                <img src={Team3} className='rounded-lg' />
+                <img src={Team3} alt="event" className='rounded-lg' />
                 <div className="absolute bottom-0 bg-black bg-opacity-100 text-white w-full text-center py-2 rounded">
                   <p className="font-bold text-2xl text-textPrimary">Martin Hill</p>
                   <p className="text-base text-white font-extrabold">Kitchen Porter</p>

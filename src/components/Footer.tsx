@@ -13,7 +13,7 @@ import menu6 from '../img/menu-06.jpg';
 const Footer = () => {
     return (
         <div className='mt-20'>
-            <div className='lg:flex justify-center items-center gap-3'>
+            <div className='lg:flex grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 p-4  justify-center items-center gap-3'>
                 <div className='lg:w-1/4 block items-center justify-center leading-4'>
                     <p className='font-playball text-4xl mb-4 flex justify-center'>Cater <span className='text-textPrimary'>Serv</span></p>
                     <p className='text-[#9A9A9A] lg:p-0 p-2 flex justify-center text-base font-sans ml-2 break-words text-center' >There cursus massa at urnaaculis estieSed aliquamellus vitae ultrs condmentum leo massamollis its estiegittis miristum.
