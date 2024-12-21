@@ -30,32 +30,32 @@ const Navbar = () => {
                 <div className="hidden lg:flex flex-grow justify-center">
                     <ul className="flex flex-wrap space-x-4 text-sm lg:text-lg text-[#0000008C] font-extrabold font-sans px-[10px] py-3 transition-all duration-500">
                         <li className="font-bold hover:text-[#d4a762]">
-                            <NavLink to="/catering" className={({ isActive, isPending }) =>
+                            <NavLink to="/" className={({ isActive, isPending }) =>
                                 isPending ? "pending" : isActive ? "text-textPrimary" : ""
                             }>Home</NavLink>
                         </li>
                         <li className="font-bold hover:text-[#d4a762]">
-                            <NavLink to="catering/about" className={({ isActive, isPending }) =>
+                            <NavLink to="/about" className={({ isActive, isPending }) =>
                                 isPending ? "pending" : isActive ? "text-textPrimary" : ""
                             }>About</NavLink>
                         </li>
                         <li className="font-bold hover:text-[#d4a762]">
-                            <NavLink to="/catering/services" className={({ isActive, isPending }) =>
+                            <NavLink to="/services" className={({ isActive, isPending }) =>
                                 isPending ? "pending" : isActive ? "text-textPrimary" : ""
                             }>Services</NavLink>
                         </li>
                         <li className="font-bold hover:text-[#d4a762]">
-                            <NavLink to="/catering/events" className={({ isActive, isPending }) =>
+                            <NavLink to="/events" className={({ isActive, isPending }) =>
                                 isPending ? "pending" : isActive ? "text-textPrimary" : ""
                             }>Events</NavLink>
                         </li>
                         <li className="font-bold hover:text-[#d4a762]">
-                            <NavLink to="catering/menu" className={({ isActive, isPending }) =>
+                            <NavLink to="/menu" className={({ isActive, isPending }) =>
                                 isPending ? "pending" : isActive ? "text-textPrimary" : ""
                             }>Menu</NavLink>
                         </li>
                         <li className="font-bold hover:text-[#d4a762]">
-                            <NavLink to="catering/contact" className={({isActive,isPending})=> isPending ? "" : isActive ? "text-textPrimary" : ""}>Contact</NavLink>
+                            <NavLink to="/contact" className={({isActive,isPending})=> isPending ? "" : isActive ? "text-textPrimary" : ""}>Contact</NavLink>
                         </li>
                     </ul>
                 </div>
@@ -75,25 +75,25 @@ const Navbar = () => {
             >
                 <ul className="flex flex-col items-center space-y-4 text-lg text-[#0000008C] font-extrabold font-sans">
                     <li className="font-bold hover:text-[#d4a762]">
-                        <NavLink to="/catering">Home</NavLink>
+                        <NavLink to="/">Home</NavLink>
                     </li>
                     <li className="font-bold hover:text-[#d4a762]">
-                        <NavLink to="catering/about">About</NavLink>
+                        <NavLink to="/about">About</NavLink>
                     </li>
                     <li className="font-bold hover:text-[#d4a762]">
-                        <NavLink to="catering/services">Services</NavLink>
+                        <NavLink to="/services">Services</NavLink>
                     </li>
                     <li className="font-bold hover:text-[#d4a762]">
-                        <NavLink to="catering/events">Events</NavLink>
+                        <NavLink to="/events">Events</NavLink>
                     </li>
                     <li className="font-bold hover:text-[#d4a762]">
-                        <NavLink to="catering/menu">Menu</NavLink>
+                        <NavLink to="/menu">Menu</NavLink>
                     </li>
                     <li className="font-bold hover:text-[#d4a762]">
-                        <NavLink to="catering/pages">Pages</NavLink>
+                        <NavLink to="/pages">Pages</NavLink>
                     </li>
                     <li className="font-bold hover:text-[#d4a762]">
-                        <NavLink to="catering/contact">Contact</NavLink>
+                        <NavLink to="/contact">Contact</NavLink>
                     </li>
                 </ul>
             </div>
