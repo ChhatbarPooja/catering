@@ -95,20 +95,20 @@ const Home = () => {
 
   return (
     <div>
-      <div className="flex flex-col md:flex-row justify-between items-center bg-[#fffcf8]">
+      <div className="flex flex-col md:flex-row justify-between items-center bg-[#fffcf8] mx-auto container">
 
         {/* Text Block */}
-        <div className="flex flex-col space-y-6 md:w-1/2 px-10 ">
+        <div className="flex flex-col space-y-6 md:w-1/2 px-10  ">
           <div className="flex lg:justify-start justify-center">
             <div className="my-6">
               <p className="uppercase border-[1px] border-[#d4a762] rounded-full  text-[#050709] font-bold py-1 px-4">
-                Welcome to CaterServ
+                Welcome to RoyalCater
               </p>
             </div>
           </div>
           <div className="animate-bounce-once">
             <p className="text-[#050709] font-playball leading-tight mb-4 text-7xl md:text-7xl lg:text-[90px] capitalize">
-              Book <span className="text-[#d4a762]">Cater</span>Serv for your dream event
+              Book <span className="text-[#d4a762]">RoyalCater</span> for your dream event
             </p>
           </div>
           <div className='flex gap-3'>

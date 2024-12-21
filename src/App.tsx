@@ -12,7 +12,7 @@ function App() {
   return (
     <>
     <div className=''>
-    <div className='mx-auto container'>
+    <div className=''>
       <Router>
         <Navbar />
         <Routes>

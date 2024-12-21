@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { LuSearch } from "react-icons/lu";
 import { useState } from "react";
+import { FaCrown } from "react-icons/fa";
 
 import { VscThreeBars } from "react-icons/vsc";
 
@@ -13,11 +14,13 @@ const Navbar = () => {
     };
 
     return (
-        <div className="py-4 border-b-[1px]">
+        <div className="py-4 mx-auto container">
             <div className="flex flex-wrap justify-between items-center px-4 lg:px-8">
                 {/* Logo */}
                 <div className="font-playball text-3xl font-bold">
-                    <h1 className="text-[#d4a762]">Cater<span className="text-black">Serv</span></h1>
+                <FaCrown />
+
+                    <h1 className="text-[#d4a762]">Royal<span className="text-black">Cater</span></h1>
                 </div>
 
                 {/* Mobile Menu Button */}
